@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from "react-router-dom";
 
-export class Navbar extends Component {
+const Navbar=()=> {
 
 
- render() {
+
     return (
       <div>
         <nav className="navbar navbar-expand-lg bg-body-dark">
@@ -19,9 +19,7 @@ export class Navbar extends Component {
         <li className="nav-item">
           <Link className="nav-link " aria-current="page" to="#">Home</Link>
         </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/about">About</Link>
-        </li>
+        
         <li className="nav-item">
           <Link className="nav-link" to="/business">Business</Link>
         </li>
@@ -51,6 +49,6 @@ export class Navbar extends Component {
       </div>
     )
   }
-}
+
 
 export default Navbar

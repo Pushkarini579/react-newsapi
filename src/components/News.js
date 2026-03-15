@@ -28,6 +28,7 @@ export class News extends Component {
     document.title=`${this.props.category.charAt(0).toUpperCase() + this.props.category.slice(1)}-NewsMonkey`; 
   }
 async updateNews(){
+  this.props.setProgress(10);
   let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=1a711e82df044f3cbeef15727f294eb1&page=${this.state.page}&pageSize=${this.props.pageSize}`;
  this.setState({loading:true});
   let data = await fetch(url);
@@ -36,17 +37,31 @@ async updateNews(){
   console.log(parsedData);
 
   this.setState({articles: parsedData.articles,totalResults: parsedData.totalResults,loading:false})
-
+  this.props.setProgress(100);
 }
 async componentDidMount(){
- let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=1a711e82df044f3cbeef15727f294eb1&page=1&pageSize=${this.props.pageSize}`;
- this.setState({loading:true});
+
+  this.props.setProgress(10);
+
+  let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=1a711e82df044f3cbeef15727f294eb1&page=1&pageSize=${this.props.pageSize}`;
+
+  this.setState({loading:true});
+
   let data = await fetch(url);
+
+  this.props.setProgress(40);
+
   let parsedData = await data.json();
 
-  console.log(parsedData);
+  this.props.setProgress(70);
 
-  this.setState({articles: parsedData.articles,totalResults: parsedData.totalResults,loading:false})
+  this.setState({
+    articles: parsedData.articles,
+    totalResults: parsedData.totalResults,
+    loading:false
+  });
+
+  this.props.setProgress(100);
 }
 /*handleNextClick=async ()=>{
   if (this.state.page + 1 <= Math.ceil(this.state.totalResults / this.props.pageSize)){
@@ -92,24 +107,29 @@ handlePrevClick=async()=>{
   
 
 }*/
- fetchMoreData = async () => {
+fetchMoreData = async () => {
+
+  this.props.setProgress(30);
 
   let nextPage = this.state.page + 1;
 
   let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=1a711e82df044f3cbeef15727f294eb1&page=${nextPage}&pageSize=${this.props.pageSize}`;
 
-  this.setState({loading:true});
-
   let data = await fetch(url);
+
+  this.props.setProgress(60);
+
   let parsedData = await data.json();
 
   this.setState({
     page: nextPage,
     articles: this.state.articles.concat(parsedData.articles),
-    totalResults: parsedData.totalResults,
-    
+    totalResults: parsedData.totalResults
   });
+
+  this.props.setProgress(100);
 }
+
 
   render() {
    
